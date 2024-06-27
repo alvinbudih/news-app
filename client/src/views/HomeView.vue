@@ -1,9 +1,21 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import { useGlobalStore } from '@/stores/global'
+
+const global = useGlobalStore()
+
+const { request } = global
+
+request({
+  method: 'GET',
+  url: '/logs',
+  headers: {
+    Authorization: localStorage.getItem('access_token')
+  }
+}).then(({ data }) => {
+  console.log(data)
+})
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <h1 class="text-3xl font-bold">Hello World</h1>
 </template>

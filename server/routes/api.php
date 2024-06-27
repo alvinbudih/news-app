@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware("auth:sanctum")->group(function () {
+  Route::get("/users", [UserController::class, "index"]);
+
   Route::get("/news", [NewsController::class, "index"]);
   Route::post("/news", [NewsController::class, "store"]);
   Route::get("/news/{id}", [NewsController::class, "show"]);
