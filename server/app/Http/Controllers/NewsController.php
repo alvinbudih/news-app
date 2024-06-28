@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Log;
 use App\Models\News;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -56,6 +57,17 @@ class NewsController extends Controller
         }
 
         return response()->json($news);
+    }
+
+    public function exportPdf(string $id)
+    {
+        $news = News::find($id);
+
+        if (!$news) {
+            return response()->json(["message" => "News Not Found"], 404);
+        }
+
+        return Pdf::loadView("news-pdf", ["news" => $news])->setPaper("A4", "landscape")->download();
     }
 
     /**

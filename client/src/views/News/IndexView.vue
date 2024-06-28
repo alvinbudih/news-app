@@ -7,6 +7,7 @@ import { AxiosError } from 'axios'
 import { storeToRefs } from 'pinia'
 import swal from 'sweetalert'
 import { RouterLink } from 'vue-router'
+import { saveAs } from 'file-saver'
 
 const global = useGlobalStore()
 const newsStore = useNewsStore()
@@ -16,6 +17,33 @@ const { request } = global
 
 const { baseUrl, isLoading } = storeToRefs(global)
 const { items } = storeToRefs(newsStore)
+
+async function downloadPdf(id: number) {
+  isLoading.value = true
+
+  try {
+    const { data } = await request({
+      method: 'GET',
+      url: `/news/${id}/pdf`,
+      headers: {
+        Authorization: localStorage.getItem('access_token')
+      },
+      responseType: 'blob'
+    })
+
+    saveAs(data, 'news.pdf')
+
+    swal('Success', 'News exported successfully', 'success')
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      swal('Failed', error.response?.data.message, 'error')
+    }
+
+    console.log(error)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 async function deleteImage(id: number) {
   isLoading.value = true
@@ -58,7 +86,6 @@ async function deleteImage(id: number) {
           <th class="p-4">No</th>
           <th class="p-4">Image</th>
           <th class="p-4">Title</th>
-          <th class="p-4">Description</th>
           <th class="p-4">Actions</th>
         </tr>
       </thead>
@@ -69,7 +96,6 @@ async function deleteImage(id: number) {
             <img :src="baseUrl + '/storage/' + item.image" :alt="item.title" width="200" />
           </td>
           <td class="p-4">{{ item.title }}</td>
-          <td class="p-4">{{ item.description }}</td>
           <td class="p-4">
             <RouterLink
               :to="{ name: 'newsEdit', params: { id: item.id } }"
@@ -79,8 +105,14 @@ async function deleteImage(id: number) {
             <a
               @click.prevent="deleteImage(item.id)"
               href=""
-              class="bg-red-500 text-white p-1 rounded hover:bg-red-700"
+              class="bg-red-500 text-white p-1 rounded hover:bg-red-700 mr-1"
               >Delete</a
+            >
+            <a
+              @click.prevent="downloadPdf(item.id)"
+              href=""
+              class="bg-green-500 text-white p-1 rounded hover:bg-green-700"
+              >Download PDF</a
             >
           </td>
         </tr>
