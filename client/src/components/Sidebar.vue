@@ -1,5 +1,43 @@
 <script setup lang="ts">
+import router from '@/router'
+import { useGlobalStore } from '@/stores/global'
+import { AxiosError } from 'axios'
+import { storeToRefs } from 'pinia'
+import swal from 'sweetalert'
 import { RouterLink } from 'vue-router'
+
+const global = useGlobalStore()
+
+const { request } = global
+
+const { isLoading, isLogin } = storeToRefs(global)
+
+async function logout() {
+  isLoading.value = true
+
+  try {
+    const { data } = await request({
+      method: 'POST',
+      url: '/logout',
+      headers: {
+        Authorization: localStorage.getItem('access_token')
+      }
+    })
+
+    localStorage.removeItem('access_token')
+    isLoading.value = false
+    swal('Success', data.message, 'success')
+    isLogin.value = false
+    router.push('/login')
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      swal('Failed', error.response?.data.message, 'error')
+    }
+
+    console.log(error)
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -35,7 +73,7 @@ import { RouterLink } from 'vue-router'
         </RouterLink>
       </li>
       <li class="w-full h-14 flex items-center text-slate-400">
-        <a href="/" class="p-4 w-full">Logout</a>
+        <a @click.prevent="logout" href="/" class="p-4 w-full">Logout</a>
       </li>
     </ul>
   </aside>

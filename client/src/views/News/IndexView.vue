@@ -6,6 +6,7 @@ import { useNewsStore } from '@/stores/news'
 import { AxiosError } from 'axios'
 import { storeToRefs } from 'pinia'
 import swal from 'sweetalert'
+import { RouterLink } from 'vue-router'
 
 const global = useGlobalStore()
 const newsStore = useNewsStore()
@@ -70,7 +71,11 @@ async function deleteImage(id: number) {
           <td class="p-4">{{ item.title }}</td>
           <td class="p-4">{{ item.description }}</td>
           <td class="p-4">
-            <a href="" class="bg-amber-500 text-white p-1 rounded hover:bg-amber-700 mr-1">Edit</a>
+            <RouterLink
+              :to="{ name: 'newsEdit', params: { id: item.id } }"
+              class="bg-amber-500 text-white p-1 rounded hover:bg-amber-700 mr-1"
+              >Edit</RouterLink
+            >
             <a
               @click.prevent="deleteImage(item.id)"
               href=""

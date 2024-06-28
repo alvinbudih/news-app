@@ -32,6 +32,11 @@ const router = createRouter({
           component: FormView
         },
         {
+          path: '/news/:id',
+          name: 'newsEdit',
+          component: FormView
+        },
+        {
           path: '/logs',
           name: 'logs',
           component: LogView
