@@ -4,6 +4,7 @@ import Loader from '@/components/Loader.vue'
 import router from '@/router'
 import { useGlobalStore } from '@/stores/global'
 import { AxiosError } from 'axios'
+import { storeToRefs } from 'pinia'
 import swal from 'sweetalert'
 import { reactive, ref } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -11,8 +12,7 @@ import { RouterLink } from 'vue-router'
 const global = useGlobalStore()
 
 const { request } = global
-
-const isLoading = ref(false)
+const { isLoading } = storeToRefs(global)
 
 const form = reactive({
   name: '',

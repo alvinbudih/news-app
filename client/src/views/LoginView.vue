@@ -13,9 +13,7 @@ const global = useGlobalStore()
 
 const { request } = global
 
-const { isLogin } = storeToRefs(global)
-
-const isLoading = ref(false)
+const { isLogin, isLoading } = storeToRefs(global)
 
 const form = reactive({
   email: '',

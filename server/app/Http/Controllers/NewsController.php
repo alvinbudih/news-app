@@ -105,9 +105,9 @@ class NewsController extends Controller
 
         if ($news->image) {
             Storage::delete($news->image);
-
-            $news->delete();
         }
+
+        $news->delete();
 
         Log::create([
             "user_id" => auth()->user()->id,

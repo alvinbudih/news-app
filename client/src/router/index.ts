@@ -3,6 +3,10 @@ import HomeView from '../views/HomeView.vue'
 import { useGlobalStore } from '@/stores/global'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
+import DashboardView from '@/views/DashboardView.vue'
+import LogView from '@/views/LogView.vue'
+import IndexView from '@/views/News/IndexView.vue'
+import FormView from '@/views/News/FormView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,7 +14,29 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      children: [
+        {
+          path: '/',
+          name: 'dashboard',
+          component: DashboardView
+        },
+        {
+          path: '/news',
+          name: 'news',
+          component: IndexView
+        },
+        {
+          path: '/news/create',
+          name: 'newsCreate',
+          component: FormView
+        },
+        {
+          path: '/logs',
+          name: 'logs',
+          component: LogView
+        }
+      ]
     },
     {
       path: '/login',

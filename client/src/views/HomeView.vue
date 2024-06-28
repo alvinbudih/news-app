@@ -1,21 +1,28 @@
 <script setup lang="ts">
+import Loader from '@/components/Loader.vue'
+import Sidebar from '@/components/Sidebar.vue'
+import { useDataStore } from '@/stores/data'
 import { useGlobalStore } from '@/stores/global'
+import { storeToRefs } from 'pinia'
+
+const { fetchAll } = useDataStore()
 
 const global = useGlobalStore()
 
-const { request } = global
+const { isLoading } = storeToRefs(global)
 
-request({
-  method: 'GET',
-  url: '/logs',
-  headers: {
-    Authorization: localStorage.getItem('access_token')
-  }
-}).then(({ data }) => {
-  console.log(data)
+isLoading.value = true
+fetchAll().finally(() => {
+  isLoading.value = false
 })
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold">Hello World</h1>
+  <div class="min-h-screen flex">
+    <Loader v-show="isLoading" />
+    <Sidebar />
+    <div class="grow p-7">
+      <RouterView />
+    </div>
+  </div>
 </template>
