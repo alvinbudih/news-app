@@ -66,6 +66,7 @@ async function createNews() {
     formData.append('title', form.title)
     formData.append('description', form.description)
     if (form.image) {
+      formData.append('image', form.image)
     }
 
     await request({

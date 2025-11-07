@@ -75,9 +75,9 @@ async function deleteImage(id: number) {
   <h1 class="text-3xl font-bold">Logs</h1>
 
   <div class="flex justify-end">
-    <RouterLink to="/news/create" class="bg-indigo-500 text-white p-1 rounded hover:bg-indigo-700"
-      >Create</RouterLink
-    >
+    <RouterLink to="/news/create" class="bg-indigo-500 text-white p-1 rounded hover:bg-indigo-700">
+      Create
+    </RouterLink>
   </div>
   <Card class="p-5 my-5">
     <table class="table-auto w-full text-center">
